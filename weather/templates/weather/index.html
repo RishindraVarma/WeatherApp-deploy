@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title has-text-centered">🌤️ Check Weather</h1>
+
+            <form method="POST" class="box">
+                {% csrf_token %}
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input class="input" type="text" name="city" placeholder="Enter City Name">
+                    </div>
+                    <div class="control">
+                        <button class="button is-info" type="submit">Get Weather</button>
+                    </div>
+                </div>
+            </form>
+
+            {% if weather_data.error %}
+                <p class="notification is-danger">{{ weather_data.error }}</p>
+            {% else %}
+                {% if weather_data.city %}
+                    <div class="box has-background-light">
+                        <h2 class="subtitle">Weather in <strong>{{ weather_data.city }}</strong></h2>
+                        <p><strong>Temperature:</strong> {{ weather_data.temperature }} °C</p>
+                        <p><strong>Description:</strong> {{ weather_data.description }}</p>
+                        <p><strong>Humidity:</strong> {{ weather_data.humidity }}%</p>
+                        <figure class="image is-48x48 mt-2">
+                            <img src="http://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" alt="weather icon">
+                        </figure>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </section>
+</body>
+</html>
